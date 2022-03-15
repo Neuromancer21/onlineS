@@ -1,5 +1,5 @@
 """
-ASGI config for onlineS project.
+ASGI config for onlineS product.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

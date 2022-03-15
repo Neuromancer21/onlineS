@@ -1,5 +1,5 @@
 """
-WSGI config for onlineS project.
+WSGI config for onlineS product.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
