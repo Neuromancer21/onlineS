@@ -1,49 +1,52 @@
 {% extends 'home_page.html' %}
 {% load static %}
-{% block css_links %}
-<link rel="stylesheet" href="{% static 'css/product_detail.css %}">
-{% endblock css_links %}
-{% block content %}
-<div class="container">
+    {% block css_links %}
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+    {% endblock css_links %}
+    {% block content %}
+    <div class="container">
         <div class="product-detail">
             <div class="product-detail__left">
-                <img src="https://pressgazette.co.uk/wp-content/uploads/2020/11/shutterstock.jpg" alt="" class="product-detail__left-img">
+                <img src="{{ product.image.all.first.image.url }}" alt="" class="product-detail__left-img">
             </div>
             <div class="product-detail__right">
-                <h2 class="right__title">Mobile Phone</h2>
+                <h2 class="right__title">{{ product.title }}</h2>
                 <ul class="right__list">
-                    <li class="right__list-item">Price: 1500$</li>
-                    <li class="right__list-item">Quantity: 15</li>
-                    <li class="right__list-item">Rating: 8</li>
-                    <li class="right__list-item">Category: Samsung</li>
-                    <li class="right__list-item">Country: Korea</li>
+                    <li class="right__list-item">Price: {{ product.price}}</li>
+                    <li class="right__list-item">Quantity: {{ product.quantity }}</li>
+                    <li class="right__list-item">Rating: {{ rating }}</li>
+                    <li class="right__list-item">Category: {{ product.category.title }}</li>
+                    <li class="right__list-item">In stock: {% if product.in_stock %} Product is available {% else %} Product is not available {% endif %}</li>
                 </ul>
             </div>
         </div>
-        <!--carousel here-->
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img class="d-block w-100 carousel-img" src="https://media.wired.com/photos/598e35fb99d76447c4eb1f28/master/pass/phonepicutres-TA.jpg" alt="First slide">
+
+        <!-- carousel here -->
+        <div class="carousel-data">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ product.image.all.first.image.url }}" class="d-block w-100 carousel-img" alt="...">
+                    </div>
+                    {% for image in carousel_images %}
+                    <div class="carousel-item">
+                        <img src="{{ image.image.url }}" class="d-block w-100 carousel-img" alt="...">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <div class="carousel-item">
-              <img class="d-block w-100 carousel-img" src="https://media.istockphoto.com/photos/boy-draws-with-a-brush-a-big-light-bulb-concept-of-innovation-and-picture-id1133176165?k=20&m=1133176165&s=612x612&w=0&h=j7J93Lkm7npuBWfww93Gkg9z4rko2FXJ4ThFGGrVzDE=" alt="Second slide">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block w-100 carousel-img" src="data:image/jpeg;base64,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" alt="Third slide">
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
         </div>
-        <!--end carousel-->
-        <!--review -->
+        <!-- end carousel -->
+
+        <!-- review here -->
         <div class="reviews-navigation">
             <h3 class="review-title">Reviews:</h3>
             <button class="btn btn-light add-review__btn">Add review</button>
@@ -51,65 +54,65 @@
         <div class="reviews">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                  <h5 class="card-title">Username</h5>
-                  <h6 class="card-subtitle mb-2">Review title</h6>
-                  <p class="card-text">Detail review</p>
-                  <p class="card-text">Rating: 8</p>
-                  <button class="btn btn-light">Edit</button>
-                  <button class="btn btn-light">Delete</button>
+                    <h5 class="card-title">Username</h5>
+                    <h6 class="card-subtitle mb-2">Review title</h6>
+                    <p class="card-text">Detail review</p>
+                    <p class="card-text">Rating: 8</p>
+                    <button class="btn btn-light">Edit</button>
+                    <button class="btn btn-light">Delete</button>
                 </div>
-              </div>
-              <div class="card" style="width: 18rem;">
+            </div>
+            <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                  <h5 class="card-title">Username</h5>
-                  <h6 class="card-subtitle mb-2">Review title</h6>
-                  <p class="card-text">Detail review</p>
-                  <p class="card-text">Rating: 8</p>
-                  <button class="btn btn-light">Edit</button>
-                  <button class="btn btn-light">Delete</button>
+                    <h5 class="card-title">Username</h5>
+                    <h6 class="card-subtitle mb-2">Review title</h6>
+                    <p class="card-text">Detail review</p>
+                    <p class="card-text">Rating: 8</p>
+                    <button class="btn btn-light">Edit</button>
+                    <button class="btn btn-light">Delete</button>
                 </div>
-              </div>
-              <div class="card" style="width: 18rem;">
+            </div>
+            <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                  <h5 class="card-title">Username</h5>
-                  <h6 class="card-subtitle mb-2">Review title</h6>
-                  <p class="card-text">Detail review</p>
-                  <p class="card-text">Rating: 8</p>
-                  <button class="btn btn-light">Edit</button>
-                  <button class="btn btn-light">Delete</button>
+                    <h5 class="card-title">Username</h5>
+                    <h6 class="card-subtitle mb-2">Review title</h6>
+                    <p class="card-text">Detail review</p>
+                    <p class="card-text">Rating: 8</p>
+                    <button class="btn btn-light">Edit</button>
+                    <button class="btn btn-light">Delete</button>
                 </div>
-              </div>
-              <div class="card" style="width: 18rem;">
+            </div>
+            <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                  <h5 class="card-title">Username</h5>
-                  <h6 class="card-subtitle mb-2">Review title</h6>
-                  <p class="card-text">Detail review</p>
-                  <p class="card-text">Rating: 8</p>
-                  <button class="btn btn-light">Edit</button>
-                  <button class="btn btn-light">Delete</button>
+                    <h5 class="card-title">Username</h5>
+                    <h6 class="card-subtitle mb-2">Review title</h6>
+                    <p class="card-text">Detail review</p>
+                    <p class="card-text">Rating: 8</p>
+                    <button class="btn btn-light">Edit</button>
+                    <button class="btn btn-light">Delete</button>
                 </div>
-              </div>
-              <div class="card" style="width: 18rem;">
+            </div>
+            <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                  <h5 class="card-title">Username</h5>
-                  <h6 class="card-subtitle mb-2">Review title</h6>
-                  <p class="card-text">Detail review</p>
-                  <p class="card-text">Rating: 8</p>
-                  <button class="btn btn-light">Edit</button>
-                  <button class="btn btn-light">Delete</button>
+                    <h5 class="card-title">Username</h5>
+                    <h6 class="card-subtitle mb-2">Review title</h6>
+                    <p class="card-text">Detail review</p>
+                    <p class="card-text">Rating: 8</p>
+                    <button class="btn btn-light">Edit</button>
+                    <button class="btn btn-light">Delete</button>
                 </div>
-              </div>
-              <div class="card" style="width: 18rem;">
+            </div>
+            <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                  <h5 class="card-title">Username</h5>
-                  <h6 class="card-subtitle mb-2">Review title</h6>
-                  <p class="card-text">Detail review</p>
-                  <p class="card-text">Rating: 8</p>
-                  <button class="btn btn-light">Edit</button>
-                  <button class="btn btn-light">Delete</button>
+                    <h5 class="card-title">Username</h5>
+                    <h6 class="card-subtitle mb-2">Review title</h6>
+                    <p class="card-text">Detail review</p>
+                    <p class="card-text">Rating: 8</p>
+                    <button class="btn btn-light">Edit</button>
+                    <button class="btn btn-light">Delete</button>
                 </div>
-              </div>
+            </div>
         </div>
-        <!--end review-->
+        <!-- end review -->
     </div>
-{% endblock content %}
+    {% endblock content %}
